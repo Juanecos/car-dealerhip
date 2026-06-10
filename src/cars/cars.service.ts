@@ -57,10 +57,10 @@ export class CarsService {
 			(car) => {
 				if (car.id === id){
 					carDB = { ...carDB, ...UpdateCarDto, id }
+					return carDB;
 				}
-				return carDB;
-			}
-		)
+				return car;
+			})
 		return carDB;
 	}
 
