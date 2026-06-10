@@ -1,6 +1,7 @@
 import { Controller, Get, Post, NotFoundException, Param, ParseIntPipe, Body, Patch, Delete, ParseUUIDPipe, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CarsService } from './cars.service';
 import { CreateCarDto } from './dto/create-car.dto';
+import { UpdateCarDto } from './dto/update-car.dto';
 
 @Controller('cars')
 @UsePipes(ValidationPipe)
@@ -23,17 +24,20 @@ export class CarsController {
 
 	@Post()
 	createCar(@Body() createCarDto: CreateCarDto){
-		return createCarDto;
+		return this.CarsService.createCar(createCarDto);
 	}
 
 	@Patch(':id')
-	updateCar(@Body() body: any){
-		return body;
+	updateCar(
+		@Param('id', ParseUUIDPipe) id:string,
+		@Body() UpdateCarDto: UpdateCarDto
+	){
+		return this.CarsService.update(id, UpdateCarDto);
 	}
 
 	@Delete(':id')
 	deleteCar(@Param('id', ParseUUIDPipe) id: string) {
-		return {method: 'delete', id};
-		// return this.CarsService.delete(+id);
+		// return {method: 'delete', id};
+		return this.CarsService.delete(id);
 	}
 }
